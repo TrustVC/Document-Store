@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - master
+      - beta
+      - +([0-9])?(.{+([0-9]),x}).x
+
+name: Release
+
+jobs:
+  tests:
+    name: Tests
+    uses: ./.github/workflows/tests.yml
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}
+
+  linters:
+    name: Linters
+    uses: ./.github/workflows/linters.yml
+
+  release:
+    name: Publish Release
+    needs: [tests, linters]
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write

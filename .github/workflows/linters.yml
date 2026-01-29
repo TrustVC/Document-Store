@@ -1,0 +1,23 @@
+on:
+  workflow_call:
+
+name: "Linters"
+
+jobs:
+  lint:
+    name: Code Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - run: npm ci --no-fund --no-audit --ignore-scripts
+      - run: npm run lint
+
+  commit-lint:
+    name: Commit Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wagoid/commitlint-github-action@v5

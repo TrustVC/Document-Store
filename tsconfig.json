@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/types",
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "strict": true,
+    "declaration": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "stripInternal": true,
+    "skipLibCheck": true
+  },
+  "files": ["./hardhat.config.ts"],
+  "exclude": ["./.build/**/*"]
+}
