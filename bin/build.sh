@@ -46,7 +46,8 @@ build_types() {
     }
 EOF
 
-  jq --arg target "$target" '.name = "@trustvc/document-store-\($target)"' package.json > package.json.tmp && mv package.json.tmp package.json
+  # Keep the package name as @trustvc/document-store without target suffix
+  # jq --arg target "$target" '.name = "@trustvc/document-store-\($target)"' package.json > package.json.tmp && mv package.json.tmp package.json
 
   cp ../../README.md .
 
