@@ -1,6 +1,6 @@
 <h1 align="center">
   <p align="center">Document Store</p>
-  <img src="https://github.com/Open-Attestation/document-store/blob/master/docs/images/document-store-banner.png?raw=true" alt="OpenAttestation Document Store" />
+  <img src="https://github.com/TrustVC/OA-Document-Store/blob/main/docs/images/document-store-banner.png?raw=true" alt="OpenAttestation Document Store" />
 </h1>
 
 <p align="center">
@@ -8,9 +8,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Open-Attestation/document-store/actions" alt="Build Status"><img src="https://github.com/Open-Attestation/document-store/actions/workflows/release.yml/badge.svg" /></a>
-  <a href="https://codecov.io/gh/Open-Attestation/document-store" alt="Code Coverage"><img src="https://codecov.io/gh/Open-Attestation/document-store/branch/master/graph/badge.svg?token=Y4R9SWXATG" /></a>
-  <a href="https://github.com/Open-Attestation/document-store/blob/master/LICENSE" alt="License"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" /></a>
+  <a href="https://github.com/TrustVC/OA-Document-Store/actions" alt="Build Status"><img src="https://github.com/TrustVC/OA-Document-Store/actions/workflows/release.yml/badge.svg" /></a>
+  <a href="https://codecov.io/gh/TrustVC/OA-Document-Store" alt="Code Coverage"><img src="https://codecov.io/gh/TrustVC/OA-Document-Store/branch/main/graph/badge.svg?token=Y4R9SWXATG" /></a>
+  <a href="https://github.com/TrustVC/OA-Document-Store/blob/main/LICENSE" alt="License"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" /></a>
 </p>
 
 The Document Store is a set of smart contracts for managing the issuance and revocation of documents. It is designed to be used in conjunction with the [OpenAttestation](https://github.com/Open-Attestation/open-attestation) library to issue and verify documents on the blockchains.
@@ -66,7 +66,7 @@ npm install @govtechsg/document-store-ethers-v5
 
 ### Document Store
 
-For a complete list of functions, refer to [IDocumentStoreBatchable.sol](https://github.com/Open-Attestation/document-store/blob/master/src/interfaces/IDocumentStoreBatchable.sol).
+For a complete list of functions, refer to [IDocumentStoreBatchable.sol](https://github.com/TrustVC/OA-Document-Store/blob/main/src/interfaces/IDocumentStoreBatchable.sol).
 
 #### Issuing a document:
 
@@ -149,7 +149,7 @@ await tx.wait();
 
 ### Transferable Document Store
 
-For a complete list of functions, refer to [ITransferableDocumentStore.sol](https://github.com/Open-Attestation/document-store/blob/master/src/interfaces/ITransferableDocumentStore.sol).
+For a complete list of functions, refer to [ITransferableDocumentStore.sol](https://github.com/TrustVC/OA-Document-Store/blob/main/src/interfaces/ITransferableDocumentStore.sol).
 
 #### Issuing a transferable document:
 
@@ -265,13 +265,13 @@ Most EVM-based blockchains should support the document store contracts. For the 
 - Optimism
 
 > [!NOTE]
-> For a list of pre-configured network names for passing to `--network` during deployment, refer to the [foundry.toml](https://github.com/Open-Attestation/document-store/blob/master/foundry.toml#L28) file.
+> For a list of pre-configured network names for passing to `--network` during deployment, refer to the [foundry.toml](https://github.com/TrustVC/OA-Document-Store/blob/main/foundry.toml#L28) file.
 
 If you wish to deploy to a network not configured yet, you can add it to the `foundry.toml` file and pass the name of the network you've added to `--network` during deployment.
 
 ## Configuration
 
-Create a `.env` file based on [`.env.example`](https://github.com/Open-Attestation/document-store/blob/master/.env.sample) and provide the information in it.
+Create a `.env` file based on [`.env.example`](https://github.com/TrustVC/OA-Document-Store/blob/main/.env.sample) and provide the information in it.
 
 The `DEPLOYER_ADDRESS` is required to be the address of the deployer during deployment. The Etherscan API keys are only required if you plan to verify the contracts on their respective chains.
 
