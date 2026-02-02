@@ -37,7 +37,8 @@ contract DocumentStoreUpgradeable_Test is CommonTest {
     assertTrue(dsProxy.hasRole(documentStore.DEFAULT_ADMIN_ROLE(), owner));
   }
 
-  function testFailReinitialize() public {
+  function test_RevertWhen_Reinitialize() public {
+    vm.expectRevert(abi.encodeWithSelector(Initializable.InvalidInitialization.selector));
     dsProxy.initialize("NewName", owner);
   }
 
