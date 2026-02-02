@@ -1,12 +1,12 @@
 {
-  "name": "@govtechsg/document-store",
+  "name": "@trustvc/document-store",
   "version": "1.0.0",
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Open-Attestation/document-store.git"
+    "url": "https://github.com/TrustVC/document-store.git"
   },
-  "author": "GovTech",
+  "author": "TrustVC",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=22.0.0"
