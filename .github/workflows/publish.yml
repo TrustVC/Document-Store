@@ -32,7 +32,12 @@ jobs:
         id: check-targets
         run: |
           echo "Checking targets..."
-          TARGETS_JSON=$(echo "${{ vars.TYPE_TARGETS }}" | jq -c --raw-input 'split(",")')
+          TYPE_TARGETS="${{ vars.TYPE_TARGETS }}"
+          if [ -z "$TYPE_TARGETS" ]; then
+            echo "TYPE_TARGETS not set, using default: ethers-v6"
+            TYPE_TARGETS="ethers-v6"
+          fi
+          TARGETS_JSON=$(echo "$TYPE_TARGETS" | jq -c --raw-input 'split(",")')
           echo "MATRIX=$TARGETS_JSON" >> $GITHUB_OUTPUT
           echo "Generated matrix: $TARGETS_JSON"
 
