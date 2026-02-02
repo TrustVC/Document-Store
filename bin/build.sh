@@ -28,7 +28,7 @@ build_types() {
 
   cat <<EOF > package.json
     {
-      "name": "@govtechsg/document-store",
+      "name": "@trustvc/document-store",
       "version": "1.0.0",
       "main": "index.js",
       "module": "index.mjs",
@@ -38,7 +38,7 @@ build_types() {
         "require": "./index.js",
         "default": "./index.mjs"
       },
-      "repository": "git+https://github.com/Open-Attestation/document-store.git",
+      "repository": "git+https://github.com/TrustVC/Document-Store.git",
       "license": "Apache-2.0",
       "publishConfig": {
         "access": "public"
@@ -46,7 +46,7 @@ build_types() {
     }
 EOF
 
-  jq --arg target "$target" '.name = "@govtechsg/document-store-\($target)"' package.json > package.json.tmp && mv package.json.tmp package.json
+  jq --arg target "$target" '.name = "@trustvc/document-store-\($target)"' package.json > package.json.tmp && mv package.json.tmp package.json
 
   cp ../../README.md .
 
