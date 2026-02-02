@@ -8,11 +8,54 @@ on:
 name: Release
 
 jobs:
-  tests:
-    name: Tests
-    uses: ./.github/workflows/tests.yml
-    secrets:
-      codecov_token: ${{ secrets.CODECOV_TOKEN }}
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    env:
+      FOUNDRY_PROFILE: ci
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: sudo apt-get install -y lcov
+      - run: npm ci --no-fund --no-audit
+      - run: npm run test:coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-coverage
+          path: ./coverage/lcov.info
+
+  test-build:
+    name: Test Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: npm ci --no-fund --no-audit --ignore-scripts
+      - run: npm run build
+
+  coverage:
+    name: Test Coverage
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: test-coverage
+      - uses: codecov/codecov-action@v4
+        continue-on-error: true
+        with:
+          fail_ci_if_error: false
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   linters:
     name: Linters
@@ -20,7 +63,7 @@ jobs:
 
   release:
     name: Publish Release
-    needs: [tests, linters]
+    needs: [run-tests, test-build, linters]
     uses: ./.github/workflows/publish.yml
     secrets: inherit
     permissions:
