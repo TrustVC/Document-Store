@@ -76,10 +76,10 @@ jobs:
       - name: Upload type targets
         uses: actions/upload-artifact@v4
         with:
-          name: types-${{ env.MATRIX_TARGET }}
+          name: package-${{ env.MATRIX_TARGET }}
           path: |
-            .build/types-${{ env.MATRIX_TARGET }}
-            !.build/types-${{ env.MATRIX_TARGET }}/node_modules
+            .build/package-${{ env.MATRIX_TARGET }}
+            !.build/package-${{ env.MATRIX_TARGET }}/node_modules
 
   publish:
     name: Publish to NPM
@@ -103,7 +103,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: .build
-          pattern: types-*
+          pattern: package-*
 
       - name: Publish to NPM
         env:

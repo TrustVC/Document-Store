@@ -15,14 +15,14 @@ build_types() {
   local target="$1"
   echo "Building target: $target"
 
-  if [ -d ".build/types-$target" ]; then
+  if [ -d ".build/package-$target" ]; then
       echo "Cleaning up build directory..."
-      rm -rf ".build/types-$target" || echo "Failed to clean up build directory."
+      rm -rf ".build/package-$target" || echo "Failed to clean up build directory."
   else
       echo "Creating build directory..."
   fi
 
-  mkdir -p ".build/types-$target" && cd ".build/types-$target"
+  mkdir -p ".build/package-$target" && cd ".build/package-$target"
 
   echo "Build directory created."
 
@@ -65,7 +65,7 @@ EOF
 
   npx --yes rollup -c
 
-  mkdir -p types && mv .build/types-$target/output/* types/
+  mkdir -p types && mv .build/package-$target/output/* types/
 
   rm -rf .build output rollup.config.mjs
 
@@ -86,13 +86,15 @@ publish_types() {
       cd "$folder" || continue
 
       jq ".version = \"$version\"" package.json > package.json.tmp && mv package.json.tmp package.json
+      
+      PACKAGE_NAME=$(jq -r '.name' package.json)
 
-      echo "Updated $(basename "$folder") package.json to version $version."
-      echo "📢 Publishing $(basename "$folder") package to NPM..."
+      echo "Updated $PACKAGE_NAME package.json to version $version."
+      echo "📢 Publishing $PACKAGE_NAME package to NPM..."
 
       npm publish
 
-      echo "🎉 Completed publishing $(basename "$folder") to NPM as $version!"
+      echo "🎉 Completed publishing $PACKAGE_NAME@$version to NPM!"
     fi
   done
 }
