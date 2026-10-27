@@ -564,12 +564,34 @@ contract TransferableDocumentStore_Pausable_Test is TransferableDocumentStore_In
     documentStore.issue(recipients[0], fakeDoc, false);
   }
 
-  function testRevokeWhenPausedRevert() public {
-    bytes32 revokeDoc = documents()[0];
-
-    vm.expectRevert(abi.encodeWithSelector(PausableUpgradeable.EnforcedPause.selector));
+  function testRevokeWhenPaused() public {
+    bytes32 unlockedDoc = documents()[0];
+    bytes32 lockedDoc = documents()[1];
 
     vm.prank(revoker);
+    documentStore.revoke(unlockedDoc);
+
+    vm.prank(revoker);
+    documentStore.revoke(lockedDoc);
+
+    assertTrue(documentStore.isRevoked(unlockedDoc), "Unlocked document should be revoked while paused");
+    assertTrue(documentStore.isRevoked(lockedDoc), "Locked document should be revoked while paused");
+    assertTrue(documentStore.paused(), "Document store should stay paused after revocation");
+  }
+
+  function testRevokeWhenPausedAsNonRevokerRevert() public {
+    address nonRevoker = vm.addr(69);
+    bytes32 revokeDoc = documents()[0];
+
+    vm.expectRevert(
+      abi.encodeWithSelector(
+        IAccessControl.AccessControlUnauthorizedAccount.selector,
+        nonRevoker,
+        documentStore.REVOKER_ROLE()
+      )
+    );
+
+    vm.prank(nonRevoker);
     documentStore.revoke(revokeDoc);
   }
 

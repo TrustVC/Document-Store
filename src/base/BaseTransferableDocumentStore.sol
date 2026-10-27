@@ -72,6 +72,11 @@ abstract contract BaseTransferableDocumentStore is
     }
   }
 
+  /**
+   * @notice Revokes a document by burning its token.
+   * @dev Allowed while the contract is paused. Pause freezes issuance and transfers;
+   *      revocation stays available so a compromised document can still be invalidated.
+   */
   function revoke(bytes32 document) public onlyRole(REVOKER_ROLE) {
     uint256 tokenId = uint256(document);
     _burn(tokenId);
@@ -130,16 +135,20 @@ abstract contract BaseTransferableDocumentStore is
   }
 
   /**
-   * @dev Pauses all token transfers.
-   * @notice Requires the caller to be admin.
+   * @notice Pauses issuance, transfers, and base-URI updates. Revocation stays available.
+   * @dev Requires `DEFAULT_ADMIN_ROLE`. Privileged behaviour while paused:
+   *      - `DEFAULT_ADMIN_ROLE` may pause, unpause, and manage roles. `setBaseURI` reverts.
+   *      - `ISSUER_ROLE` cannot `issue` (minting is rejected in `_update`).
+   *      - `REVOKER_ROLE` can still `revoke`. The burn path is exempt from the pause check.
+   *      - Token holders cannot transfer.
    */
   function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
     _pause();
   }
 
   /**
-   * @dev Unpauses all token transfers.
-   * @notice Requires the caller to be admin.
+   * @notice Unpauses issuance, transfers, and base-URI updates.
+   * @dev Requires `DEFAULT_ADMIN_ROLE`.
    */
   function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
     _unpause();
@@ -153,11 +162,18 @@ abstract contract BaseTransferableDocumentStore is
     return _getStorage().locked[tokenId];
   }
 
+  /**
+   * @dev Mints and transfers revert while paused. Burns (`to == address(0)`) do not:
+   *      `revoke` is the only burn caller, and it must work during an incident pause.
+   */
   function _update(
     address to,
     uint256 tokenId,
     address auth
-  ) internal virtual override whenNotPaused returns (address) {
+  ) internal virtual override returns (address) {
+    if (to != address(0)) {
+      _requireNotPaused();
+    }
     address from = super._update(to, tokenId, auth);
     if (_isLocked(tokenId) && (from != address(0) && to != address(0))) {
       revert DocumentLocked(bytes32(tokenId));
